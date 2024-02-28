@@ -23,11 +23,11 @@ namespace DataAccess.Repositories
         }
         public async Task<Author> readAsync(long id)
         {
-            return await _context.Authors.FirstOrDefaultAsync(a => a.Id == id);
+            return await _context.Authors.Include(a => a.Books).FirstOrDefaultAsync(a => a.Id == id);
         }
         public async Task<List<Author>> readAllAsync()
         {
-            return await _context.Authors.ToListAsync();
+            return await _context.Authors.Include(a => a.Books).ToListAsync();
         }
         public async Task UpdateAsync(Author author)
         {

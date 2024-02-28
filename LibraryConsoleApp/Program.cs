@@ -7,6 +7,7 @@ namespace LibraryConsoleApp
     internal class Program
     {
         private static AuthorRepository _authorRepository;
+        private static BookRepository _bookRepository;
         static async Task Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
@@ -14,6 +15,7 @@ namespace LibraryConsoleApp
             var dbcf = new LibraryDbContextFactory();
             var context = dbcf.CreateDbContext(args);
             _authorRepository = new AuthorRepository(context);
+            _bookRepository = new BookRepository(context);
 
             while (true)
             {
@@ -66,10 +68,10 @@ namespace LibraryConsoleApp
             var authors = await _authorRepository.readAllAsync();
 
             Console.WriteLine("Authors:");
-            Console.WriteLine($"{"Id",-5} {"Vardas",-20} {"Pavardė",-20}");
+            Console.WriteLine($"{"Id",-5} {"Vardas",-20} {"Pavardė",-20} {"parase knygu",-5}");
             foreach (var author in authors)
             {
-                Console.WriteLine($"{author.Id,-5} {author.Name,-20} {author.Surname,-20}");
+                Console.WriteLine($"{author.Id,-5} {author.Name,-20} {author.Surname,-20} {author.Books.Count,-20}");
             }
         }
     }
