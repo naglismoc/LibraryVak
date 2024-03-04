@@ -1,9 +1,9 @@
 ﻿using DataAccess.Entities;
 using DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibraryConsoleApp
 {
+
     internal class Program
     {
         private static AuthorRepository _authorRepository;
@@ -19,7 +19,7 @@ namespace LibraryConsoleApp
 
             while (true)
             {
-                printOptions();
+                PrintOptions();
                 string option = Console.ReadLine();
                 switch (option)
                 {
@@ -44,7 +44,7 @@ namespace LibraryConsoleApp
                 }
             }
         }
-        public static void printOptions()
+        public static void PrintOptions()
         {
             Console.WriteLine("1. authors list");
             Console.WriteLine("2. show author");

@@ -1,10 +1,5 @@
 ﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -21,13 +16,31 @@ namespace DataAccess.Repositories
             _context.Authors.Add(author);
             await _context.SaveChangesAsync();
         }
-        public async Task<Author> readAsync(long id)
+        public async Task<Author> ReadAsync(long id)
         {
-            return await _context.Authors.Include(a => a.Books).FirstOrDefaultAsync(a => a.Id == id);
+            return await _context.Authors
+                  .Select(a => new Author
+                  {
+                      Id = a.Id,
+                      Name = a.Name,
+                      Surname = a.Surname,
+                      // Only include relevant Book properties (e.g., Id, Title)
+                      Books = a.Books.Select(b => new Book { Id = b.Id, Title = b.Title }).ToList()
+                  })
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
-        public async Task<List<Author>> readAllAsync()
+        public async Task<List<Author>> ReadAllAsync()
         {
-            return await _context.Authors.Include(a => a.Books).ToListAsync();
+            return await _context.Authors
+            .Select(a => new Author
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Surname = a.Surname,
+                // Only include relevant Book properties (e.g., Id, Title)
+                Books = a.Books.Select(b => new Book { Id = b.Id, Title = b.Title }).ToList()
+            })
+            .ToListAsync();
         }
         public async Task UpdateAsync(Author author)
         {

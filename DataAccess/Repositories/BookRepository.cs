@@ -1,10 +1,5 @@
 ﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -23,11 +18,39 @@ namespace DataAccess.Repositories
         }
         public async Task<Book> readAsync(long id)
         {
-            return await _context.Books.FirstOrDefaultAsync(a => a.Id == id);
+            return await _context.Books
+                 .Select(b => new Book
+                 {
+                     Id = b.Id,
+                     Title = b.Title,
+                     Genre = b.Genre,
+                     // Include other desired Book properties
+                     Author = new Author // Include the full Author object
+                     {
+                         Id = b.Author.Id,
+                         Name = b.Author.Name,
+                         Surname = b.Author.Surname
+                     }
+                 })
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
         public async Task<List<Book>> readAllAsync()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books
+         .Select(b => new Book
+         {
+             Id = b.Id,
+             Title = b.Title,
+             Genre = b.Genre,
+             // Include other desired Book properties
+             Author = new Author // Include the full Author object
+             {
+                 Id = b.Author.Id,
+                 Name = b.Author.Name,
+                 Surname = b.Author.Surname
+             }
+         })
+         .ToListAsync();
         }
         public async Task UpdateAsync(Book book)
         {

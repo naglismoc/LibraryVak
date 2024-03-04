@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Entities
 {
@@ -14,6 +9,6 @@ namespace DataAccess.Entities
         public string Genre { get; set; }
         [Column(name: "author_id")]
         public long AuthorId { get; set; }
-        public Author Author { get; set; }
+        public Author? Author { get; set; }
     }
 }
